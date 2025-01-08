@@ -35,18 +35,33 @@ def request_pure(
     method: str,
     params: Union[Dict[str, Any], Tuple[Any, ...]],
     id: Any,
+    session: None | str
 ) -> Dict[str, Any]:
     """Create a request"""
-    return {
-        "jsonrpc": "2.0",
-        "method": method,
-        **(
-            {"params": list(params) if isinstance(params, tuple) else params}
-            if params
-            else {}
-        ),
-        "id": id if id is not NOID else next(id_generator),
-    }
+    if session is None:
+        return {
+            "jsonrpc": "2.0",
+            "method": method,
+            **(
+                {"params": list(params) if isinstance(params, tuple) else params}
+                if params
+                else {}
+            ),
+            "id": id if id is not NOID else next(id_generator),
+        }
+    else:
+        return {
+            "jsonrpc": "2.0",
+            "method": method,
+            **(
+                {"params": list(params) if isinstance(params, tuple) else params}
+                if params
+                else {}
+            ),
+            "id": id if id is not NOID else next(id_generator),
+            "session" : session
+        }
+
 
 
 def request_impure(
@@ -54,10 +69,11 @@ def request_impure(
     method: str,
     params: Union[Dict[str, Any], Tuple[Any, ...], None] = None,
     id: Any = NOID,
+    session = None | str
 ) -> Dict[str, Any]:
     """Create a request, optionally passing params and id"""
     return request_pure(
-        id_generator or id_generators.decimal(), method, params or (), id
+        id_generator or id_generators.decimal(), method, params or (), id, session
     )
 
 
