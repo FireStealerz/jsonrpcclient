@@ -35,7 +35,7 @@ def request_pure(
     method: str,
     params: Union[Dict[str, Any], Tuple[Any, ...]],
     id: Any,
-    session: None | str
+    session: None
 ) -> Dict[str, Any]:
     """Create a request"""
     if session is None:
@@ -69,7 +69,7 @@ def request_impure(
     method: str,
     params: Union[Dict[str, Any], Tuple[Any, ...], None] = None,
     id: Any = NOID,
-    session = None | str
+    session = None 
 ) -> Dict[str, Any]:
     """Create a request, optionally passing params and id"""
     return request_pure(
